@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directorio Administrativo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Botón flotante para acceso administrativo -->
+    <button id="adminAccessBtn" class="floating-admin-btn" title="Acceso Administrativo">
+        ✏️
+    </button>
+
+    <!-- Modal de Login -->
+    <div id="loginModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeLoginModal()">&times;</span>
+            <h2>🔐 Acceso Administrativo</h2>
+            <p style="color: #666; margin-bottom: 20px;">Ingresa la contraseña para gestionar el directorio</p>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" required placeholder="Ingresa la contraseña">
+                </div>
+                <button type="submit">🔐 Ingresar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>📋 Directorio Administrativo</h1>
+
+        <!-- Sección de Formulario (solo para admin) -->
+        <div id="adminSection" class="card hidden">
+            <div class="admin-controls">
+                <div>
+                    <span class="admin-badge">✓ Modo Administrador</span>
+                </div>
+                <button onclick="logout()" class="btn-secondary">🚪 Cerrar Sesión</button>
+            </div>
+            
+            <div class="admin-section">
+                <h2>Agregar Nuevo Administrativo</h2>
+                <form id="adminForm">
+                    <div class="form-group">
+                        <label for="nombre">Nombre Completo *</label>
+                        <input type="text" id="nombre" required placeholder="Ej: María González">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="correo">Correo Electrónico *</label>
+                        <input type="email" id="correo" required placeholder="Ej: maria.gonzalez@empresa.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefono">Teléfono *</label>
+                        <input type="tel" id="telefono" required placeholder="Ej: +57 300 123 4567">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="area">Área a Cargo *</label>
+                        <input type="text" id="area" required placeholder="Ej: Recursos Humanos">
+                    </div>
+
+                    <button type="submit">➕ Agregar Administrativo</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Sección de Directorio (visible para todos) -->
+        <div class="card">
+            <h2>Directorio (Total: <span id="totalCount">0</span>)</h2>
+            <div id="directoryList" class="directory-grid">
+                <p class="empty-message">No hay administrativos registrados.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
