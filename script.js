@@ -17,11 +17,9 @@ window.addEventListener('load', () => {
 // Manejar clic en el botón flotante
 document.getElementById('adminAccessBtn').addEventListener('click', () => {
     if (isAdmin) {
-        // Si ya es admin, mostrar/ocultar el formulario
         const adminSection = document.getElementById('adminSection');
         adminSection.classList.toggle('hidden');
     } else {
-        // Si no es admin, mostrar modal de login
         document.getElementById('loginModal').classList.remove('hidden');
         document.getElementById('password').focus();
     }
@@ -51,9 +49,8 @@ document.getElementById('loginForm').addEventListener('submit', (e) => {
         document.getElementById('adminSection').classList.remove('hidden');
         document.getElementById('adminAccessBtn').textContent = '🔓';
         document.getElementById('adminAccessBtn').title = 'Gestionar Directorio';
-        renderDirectory(); // Actualizar para mostrar botones de eliminar
+        renderDirectory();
         
-        // Scroll suave hacia el formulario
         document.getElementById('adminSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     } else {
         alert('❌ Contraseña incorrecta');
@@ -68,7 +65,7 @@ function logout() {
     document.getElementById('adminSection').classList.add('hidden');
     document.getElementById('adminAccessBtn').textContent = '✏️';
     document.getElementById('adminAccessBtn').title = 'Acceso Administrativo';
-    renderDirectory(); // Actualizar para ocultar botones de eliminar
+    renderDirectory();
     alert('✅ Sesión cerrada correctamente');
 }
 
@@ -86,6 +83,7 @@ document.getElementById('adminForm').addEventListener('submit', (e) => {
     const correo = document.getElementById('correo').value.trim();
     const telefono = document.getElementById('telefono').value.trim();
     const area = document.getElementById('area').value.trim();
+    const descripcion = document.getElementById('descripcion').value.trim();
 
     // Crear objeto administrativo
     const nuevoAdmin = {
@@ -93,7 +91,8 @@ document.getElementById('adminForm').addEventListener('submit', (e) => {
         nombre,
         correo,
         telefono,
-        area
+        area,
+        descripcion: descripcion || 'Sin descripción disponible'
     };
 
     // Agregar al array
@@ -125,20 +124,44 @@ function renderDirectory() {
     }
 
     directoryList.innerHTML = administrativos.map(admin => `
-        <div class="person-card">
-            ${isAdmin ? `<button class="delete-btn" onclick="deleteAdmin(${admin.id})" title="Eliminar">×</button>` : ''}
-            <h3>${admin.nombre}</h3>
+        <div class="person-card" onclick="toggleDescription(${admin.id}, event)">
+            ${isAdmin ? `<button class="delete-btn" onclick="deleteAdmin(${admin.id}, event)" title="Eliminar">×</button>` : ''}
+            <h3>
+                ${admin.nombre}
+                <span class="expand-icon" id="icon-${admin.id}">▼</span>
+            </h3>
             <div class="person-info">
                 <p><strong>📧 Correo:</strong> ${admin.correo}</p>
                 <p><strong>📱 Teléfono:</strong> ${admin.telefono}</p>
                 <p><strong>🏢 Área:</strong> ${admin.area}</p>
             </div>
+            <div class="person-description" id="desc-${admin.id}">
+                <p><strong>📝 Descripción:</strong></p>
+                <p>${admin.descripcion || 'Sin descripción disponible'}</p>
+            </div>
+            <p class="click-hint">👆 Click para ${isAdmin ? 'ver más detalles' : 'ver descripción'}</p>
         </div>
     `).join('');
 }
 
+// Función para mostrar/ocultar descripción
+function toggleDescription(id, event) {
+    // Evitar que se active al hacer click en el botón de eliminar
+    if (event.target.classList.contains('delete-btn')) {
+        return;
+    }
+
+    const description = document.getElementById(`desc-${id}`);
+    const icon = document.getElementById(`icon-${id}`);
+    
+    description.classList.toggle('expanded');
+    icon.classList.toggle('rotated');
+}
+
 // Función para eliminar un administrativo
-function deleteAdmin(id) {
+function deleteAdmin(id, event) {
+    event.stopPropagation(); // Evitar que se active el toggle de descripción
+    
     if (!isAdmin) {
         alert('❌ No tienes permisos para eliminar administrativos');
         return;
