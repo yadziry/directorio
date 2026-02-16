@@ -322,3 +322,58 @@ button:active {
         width: 95%;
     }
 }
+/* Estilos para textarea */
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: border-color 0.3s;
+    resize: vertical;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #5d8e53;
+}
+
+/* Estilos para la descripción colapsable */
+.person-card {
+    cursor: pointer;
+    user-select: none;
+}
+
+.person-description {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, margin-top 0.3s ease;
+    color: #555;
+    line-height: 1.6;
+}
+
+.person-description.expanded {
+    max-height: 500px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 2px solid #e0e0e0;
+}
+
+.click-hint {
+    font-size: 0.85em;
+    color: #888;
+    font-style: italic;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.expand-icon {
+    float: right;
+    font-size: 1.2em;
+    transition: transform 0.3s;
+}
+
+.expand-icon.rotated {
+    transform: rotate(180deg);
+}
